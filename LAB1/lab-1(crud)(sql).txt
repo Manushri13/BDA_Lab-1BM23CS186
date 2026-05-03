@@ -1,0 +1,85 @@
+-- ================================
+-- 1️⃣ Create Database & Table
+-- ================================
+
+CREATE DATABASE iot_system;
+USE iot_system;
+
+CREATE TABLE iot_devices (
+    deviceID VARCHAR(20) PRIMARY KEY,
+    location VARCHAR(100),
+    temperature INT,
+    humidity INT,
+    alerts TEXT,
+    data_points INT
+);
+
+
+-- ================================
+-- 2️⃣ Insert Multiple Devices
+-- ================================
+
+INSERT INTO iot_devices (deviceID, location, temperature, humidity, alerts, data_points)
+VALUES
+('SEN001', 'Factory Floor A', 28, 65, 'Normal', 1500),
+('SEN002', 'Warehouse Section B', 35, 72, 'High Temperature', 820),
+('SEN003', 'Cold Storage', 4, 80, 'Low Temperature Warning', 3200);
+
+
+-- ================================
+-- 3️⃣ View All Devices
+-- ================================
+
+SELECT * FROM iot_devices;
+
+
+-- ================================
+-- 4️⃣ Find Specific Device
+-- ================================
+
+SELECT * FROM iot_devices
+WHERE deviceID = 'SEN001';
+
+
+-- ================================
+-- 5️⃣ Projection (Only Alerts)
+-- ================================
+
+SELECT alerts
+FROM iot_devices
+WHERE deviceID = 'SEN002';
+
+
+-- ================================
+-- 6️⃣ Real-Time Update (New Data Stream)
+-- ================================
+
+-- Increment data points count
+UPDATE iot_devices
+SET data_points = data_points + 1
+WHERE deviceID = 'SEN001';
+
+-- Update temperature reading
+UPDATE iot_devices
+SET temperature = 29
+WHERE deviceID = 'SEN001';
+
+
+-- ================================
+-- 7️⃣ Delete All Devices (Reset)
+-- ================================
+
+DELETE FROM iot_devices;
+
+
+-- ================================
+-- 8️⃣ Aggregation (Count Alerts)
+-- ================================
+
+-- If alerts are stored as comma-separated values,
+-- this counts number of words separated by commas
+
+SELECT 
+    deviceID,
+    LENGTH(alerts) - LENGTH(REPLACE(alerts, ',', '')) + 1 AS total_alerts
+FROM iot_devices;
