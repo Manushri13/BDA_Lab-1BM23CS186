@@ -1,0 +1,53 @@
+db.iot_devices.insertMany([
+  {
+    deviceID: "SEN001",
+    location: "Factory Floor A",
+    temperature: 28,
+    humidity: 65,
+    alerts: ["Normal"],
+    data_points: 1500
+  },
+  {
+    deviceID: "SEN002",
+    location: "Warehouse Section B",
+    temperature: 35,
+    humidity: 72,
+    alerts: ["High Temperature"],
+    data_points: 820
+  },
+  {
+    deviceID: "SEN003",
+    location: "Cold Storage",
+    temperature: 4,
+    humidity: 80,
+    alerts: ["Low Temperature Warning"],
+    data_points: 3200
+  }
+])
+
+
+db.iot_devices.find()
+
+db.iot_devices.find({ deviceID: "SEN001" })
+
+db.iot_devices.find(
+  { deviceID: "SEN002" },
+  { _id: 0, alerts: 1 }
+)
+
+db.iot_devices.updateOne(
+  { deviceID: "SEN001" },
+  { $inc: { data_points: 1 } }
+)
+
+db.iot_devices.deleteMany({})
+
+
+db.iot_devices.aggregate([
+  {
+    $project: {
+      deviceID: 1,
+      total_alerts: { $size: "$alerts" }
+    }
+  }
+])
